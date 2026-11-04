@@ -1,0 +1,13 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/MiniPspPix.Api/MiniPspPix.Api.csproj" />
+    <Project Path="src/MiniPspPix.Application/MiniPspPix.Application.csproj" />
+    <Project Path="src/MiniPspPix.Domain/MiniPspPix.Domain.csproj" />
+    <Project Path="src/MiniPspPix.Infrastructure/MiniPspPix.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/MiniPspPix.ConcurrencyTests/MiniPspPix.ConcurrencyTests.csproj" />
+    <Project Path="tests/MiniPspPix.IntegrationTests/MiniPspPix.IntegrationTests.csproj" />
+    <Project Path="tests/MiniPspPix.UnitTests/MiniPspPix.UnitTests.csproj" />
+  </Folder>
+</Solution>
