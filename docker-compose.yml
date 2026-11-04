@@ -82,8 +82,11 @@ services:
     container_name: minipsp-api
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__PostgresConnection=Host=postgres;Port=5432;Database=minipsp;Username=pspuser;Password=psppassword
-      - ConnectionStrings__RabbitMqConnection=amqp://guest:guest@rabbitmq:5672/
+      - Database__Provider=PostgreSql
+      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=minipsp;Username=pspuser;Password=psppassword
+      - RabbitMQ__Host=rabbitmq
+      - RabbitMQ__Port=5672
+      - RabbitMQ__Enabled=true
       - OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4317
     ports:
       - "5000:5000"

@@ -25,7 +25,7 @@ export const options = {
 const BASE_URL = __ENV.API_URL || 'http://localhost:5000';
 
 function randomTxId() {
-  return 'TX' + Math.random().toString(36).substring(2, 12).toUpperCase();
+  return 'TX' + Math.random().toString(36).substring(2, 12).toUpperCase() + Date.now().toString(36).toUpperCase();
 }
 
 function randomKey() {
@@ -37,10 +37,10 @@ export default function () {
   const idempotencyKey = randomKey();
 
   // =========================================================================
-  // ETAPA 1: Emissão de Cobrança Pix Imediata (POST /v1/pix/cob)
+  // ETAPA 1: Emissão de Cobrança Pix Imediata (POST /api/v1/charges)
   // =========================================================================
   const cobPayload = JSON.stringify({
-    amount: (Math.random() * 200 + 10).toFixed(2),
+    amount: parseFloat((Math.random() * 200 + 10).toFixed(2)),
     pixKey: 'lojista@minipsp.com.br',
     description: 'Pedido E-commerce k6',
     merchantName: 'PSP MERCHANT BR',
@@ -56,13 +56,13 @@ export default function () {
   };
 
   const startCob = Date.now();
-  const resCob = http.post(`${BASE_URL}/v1/pix/cob`, cobPayload, cobParams);
+  const resCob = http.post(`${BASE_URL}/api/v1/charges`, cobPayload, cobParams);
   chargeCreationDuration.add(Date.now() - startCob);
 
   const cobOk = check(resCob, {
-    'POST /v1/pix/cob retornou 201': (r) => r.status === 201,
-    'BR Code gerado com sucesso': (r) => r.json('brCode') !== undefined && r.json('brCode').startsWith('000201'),
-    'SVG do QR Code gerado': (r) => r.json('qrCodeSvg') !== undefined,
+    'POST /api/v1/charges retornou 201': (r) => r.status === 201,
+    'BR Code gerado com sucesso': (r) => r.json('value.brCode') !== undefined && r.json('value.brCode').startsWith('000201'),
+    'SVG do QR Code gerado': (r) => r.json('value.qrCodeSvg') !== undefined,
   });
 
   if (cobOk) {
@@ -74,7 +74,7 @@ export default function () {
   // =========================================================================
   // ETAPA 2: Teste de Idempotência (Replay idêntico da mesma chamada)
   // =========================================================================
-  const resReplay = http.post(`${BASE_URL}/v1/pix/cob`, cobPayload, cobParams);
+  const resReplay = http.post(`${BASE_URL}/api/v1/charges`, cobPayload, cobParams);
   const replayOk = check(resReplay, {
     'Replay idempotente retornou 201': (r) => r.status === 201,
     'Header Idempotent-Replay presente': (r) => r.headers['Idempotent-Replay'] === 'true',
@@ -85,12 +85,12 @@ export default function () {
   }
 
   // =========================================================================
-  // ETAPA 3: Consulta de Cobrança Pix (GET /v1/pix/cob/{txid})
+  // ETAPA 3: Consulta de Cobrança Pix (GET /api/v1/charges/{txId})
   // =========================================================================
-  const resGet = http.get(`${BASE_URL}/v1/pix/cob/${txId}`);
+  const resGet = http.get(`${BASE_URL}/api/v1/charges/${txId}`);
   check(resGet, {
-    'GET /v1/pix/cob/{txid} retornou 200': (r) => r.status === 200,
-    'Status inicial da cobrança é Active': (r) => r.json('status') === 'Active',
+    'GET /api/v1/charges/{txId} retornou 200': (r) => r.status === 200,
+    'Status inicial da cobrança é Active': (r) => r.json('value.status') === 'Active',
   });
 
   // =========================================================================
@@ -98,16 +98,16 @@ export default function () {
   // =========================================================================
   const inbPayload = JSON.stringify({
     txId: txId,
-    amount: parseFloat(resCob.json('amount')),
+    amount: parseFloat(resCob.json('value.amount')),
   });
 
-  const resInb = http.post(`${BASE_URL}/v1/pix/simulation/inbound-payment`, inbPayload, {
+  const resInb = http.post(`${BASE_URL}/api/v1/payments/simulation`, inbPayload, {
     headers: { 'Content-Type': 'application/json' },
   });
 
   const inbOk = check(resInb, {
-    'POST /simulation/inbound-payment retornou 200': (r) => r.status === 200,
-    'Pagamento liquidado com sucesso': (r) => r.json('success') === true,
+    'POST /api/v1/payments/simulation retornou 200': (r) => r.status === 200,
+    'Pagamento liquidado com sucesso': (r) => r.json('value.success') === true,
   });
 
   if (inbOk) {
@@ -118,4 +118,3 @@ export default function () {
 
   sleep(0.1);
 }
-

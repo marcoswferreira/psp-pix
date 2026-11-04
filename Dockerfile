@@ -2,21 +2,20 @@ FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /src
 
 COPY ["MiniPspPix.sln", "./"]
-COPY ["src/MiniPspPix.Domain/MiniPspPix.Domain.csproj", "src/MiniPspPix.Domain/"]
-COPY ["src/MiniPspPix.Application/MiniPspPix.Application.csproj", "src/MiniPspPix.Application/"]
-COPY ["src/MiniPspPix.Infrastructure/MiniPspPix.Infrastructure.csproj", "src/MiniPspPix.Infrastructure/"]
-COPY ["src/MiniPspPix.Api/MiniPspPix.Api.csproj", "src/MiniPspPix.Api/"]
+COPY ["src/Domain/Domain.csproj", "src/Domain/"]
+COPY ["src/Application/Application.csproj", "src/Application/"]
+COPY ["src/Infrastructure/Infrastructure.csproj", "src/Infrastructure/"]
+COPY ["src/MiniPspPix.API/MiniPspPix.API.csproj", "src/MiniPspPix.API/"]
 
-RUN dotnet restore "src/MiniPspPix.Api/MiniPspPix.Api.csproj"
+RUN dotnet restore "src/MiniPspPix.API/MiniPspPix.API.csproj"
 
 COPY src/ src/
-WORKDIR "/src/src/MiniPspPix.Api"
-RUN dotnet publish "MiniPspPix.Api.csproj" -c Release -o /app/publish /p:UseAppHost=false
+WORKDIR "/src/src/MiniPspPix.API"
+RUN dotnet publish "MiniPspPix.API.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
 FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS final
 WORKDIR /app
 EXPOSE 5000
 ENV ASPNETCORE_URLS=http://+:5000
 COPY --from=build /app/publish .
-ENTRYPOINT ["dotnet", "MiniPspPix.Api.dll"]
-
+ENTRYPOINT ["dotnet", "MiniPspPix.API.dll"]
