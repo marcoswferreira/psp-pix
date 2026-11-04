@@ -88,3 +88,4 @@ k6 run load-tests/k6-charges-load.js
 ```
 
 Durante o teste, você pode acompanhar em tempo real o aumento na taxa de requisições por segundo (RPS), p95 e contadores de negócio no painel do **Grafana** em `http://localhost:3000` (usuário `admin` / senha `admin`).
+

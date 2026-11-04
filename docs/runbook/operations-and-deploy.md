@@ -126,3 +126,4 @@ Ao iniciar a aplicação (`Program.cs`), o método assíncrono `app.MigrateDatab
 ### 3. "Saldo insuficiente na conta MERCHANT-001 (422)"
 * **Causa**: Tentativa de saque (`POST /api/v1/payout`) com valor superior ao saldo disponível no Ledger.
 * **Ação**: Realize uma simulação de pagamento inbound (`POST /api/v1/payments/simulation`) para creditar saldo na conta antes de tentar novo saque.
+

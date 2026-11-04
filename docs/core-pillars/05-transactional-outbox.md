@@ -92,3 +92,4 @@ O serviço de segundo plano (`BackgroundService`):
   * `pix.payment.received`: Disparado na confirmação e liquidação inbound do pagamento.
   * `pix.payout.completed`: Disparado na liquidação com sucesso de uma ordem de saque/saída.
 * **Garantia de Entrega**: *At-Least-Once Delivery* (Pelo menos uma vez). Os consumidores externos devem ser idempotentes para processar eventuais reentregas.
+

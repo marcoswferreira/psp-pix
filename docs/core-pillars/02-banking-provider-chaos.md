@@ -92,3 +92,4 @@ A API absorve a duplicata, processa o primeiro crédito no Ledger e devolve na s
   "errors": []
 }
 ```
+

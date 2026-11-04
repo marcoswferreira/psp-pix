@@ -1,0 +1,93 @@
+name: CI - Build, Test & Quality Gate
+
+on:
+  push:
+    branches: [ main, master, develop ]
+  pull_request:
+    branches: [ main, master, develop ]
+  workflow_dispatch:
+
+jobs:
+  build-and-test:
+    name: Build & Test (.NET 10)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET 10 SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Restore Dependencies
+        run: dotnet restore MiniPspPix.sln
+
+      - name: Build Solution
+        run: dotnet build MiniPspPix.sln --configuration Release --no-restore
+
+      - name: Execute Automated Tests with Coverage
+        run: |
+          dotnet test MiniPspPix.sln \
+            --configuration Release \
+            --no-build \
+            --settings coverlet.runsettings \
+            --collect:"XPlat Code Coverage" \
+            --results-directory ./TestResults
+
+      - name: Verify Code Coverage Threshold (>= 80%)
+        run: |
+          python3 -c "
+          import xml.etree.ElementTree as ET, glob, sys
+          files = sorted(glob.glob('./TestResults/**/coverage.cobertura.xml', recursive=True), key=lambda x: -__import__('os').path.getmtime(x))
+          if not files:
+              print('::error::Nenhum arquivo de cobertura coverage.cobertura.xml foi encontrado!')
+              sys.exit(1)
+          
+          lines = {}
+          for f in files:
+              root = ET.parse(f).getroot()
+              for pkg in root.findall('.//package'):
+                  name = pkg.attrib.get('name')
+                  if not name or name.endswith('Tests'): continue
+                  for cls in pkg.findall('.//class'):
+                      cls_name = cls.attrib.get('name', '')
+                      if 'Microsoft.AspNetCore.OpenApi' in cls_name or 'Generated' in cls_name: continue
+                      for l in cls.findall('.//line'):
+                          key = (cls.attrib.get('filename'), l.attrib.get('number'))
+                          lines[key] = lines.get(key, 0) + int(l.attrib.get('hits', 0))
+          total = len(lines)
+          covered = sum(1 for hits in lines.values() if hits > 0)
+          rate = (covered / total * 100) if total > 0 else 0
+          print(f'Overall Line Coverage: {covered}/{total} ({rate:.2f}%)')
+          if rate < 80.0:
+              print(f'::error::A cobertura de código ({rate:.2f}%) está abaixo da meta mínima exigida de 80.0%!')
+              sys.exit(1)
+          else:
+              print(f'::notice::Meta de cobertura satisfeita: {rate:.2f}% >= 80.0%')
+          "
+
+      - name: Upload Coverage Reports Artifact
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: coverage-cobertura-xml
+          path: ./TestResults/**/coverage.cobertura.xml
+          retention-days: 14
+
+  docker-validation:
+    name: Docker Image Build Validation
+    needs: build-and-test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Docker Image
+        run: |
+          docker build -t minipsp-api:test -f Dockerfile .

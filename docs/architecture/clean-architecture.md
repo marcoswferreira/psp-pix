@@ -96,3 +96,4 @@ A organização de testes espelha rigorosamente as camadas da arquitetura:
 1. `tests/Domain.UnitTests`: Testes rápidos, sem dependências ou mocks, validando invariantes matemáticas e regras puras.
 2. `tests/Application.UnitTests`: Testes dos casos de uso e orquestrações utilizando a biblioteca `NSubstitute` para isolar repositórios e serviços.
 3. `tests/IntegrationTests`: Testes de ponta a ponta com `CustomWebApplicationFactory`, testando os fluxos HTTP reais, concorrência no banco e middleware de idempotência.
+

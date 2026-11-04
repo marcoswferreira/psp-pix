@@ -84,3 +84,4 @@ Além da string textual do BR Code, a API gera em tempo real a representação v
 * Sem dependências de bibliotecas externas pesadas ou binários de C++.
 * Renderizado com viewBox responsivo e estilo visual conforme a identidade visual do Pix (Badge central `#32BCAD` com texto "PIX").
 * Pode ser injetado diretamente no HTML de front-ends ou impresso em notas fiscais e terminais POS.
+

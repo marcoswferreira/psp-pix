@@ -174,3 +174,4 @@ flowchart LR
     OTelCollector -->|Exporta métricas| PromServer
     GrafServer -->|Consulta métricas:9090| PromServer
 ```
+

@@ -118,3 +118,4 @@ No teste `WithOptimisticConcurrencyControl_ParallelDebits_ShouldPreventDoubleSpe
   * **As outras 9 requisições** são rejeitadas por conflito de versão (`ConcurrencyException`) ou saldo insuficiente.
   * O saldo final da conta do comerciante termina rigorosamente em **R$ 0,00** (nunca negativo).
   * O balanço do Ledger encerra com $\sum \text{Débitos} = 100.00$ e $\sum \text{Créditos} = 100.00$.
+

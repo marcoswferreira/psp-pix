@@ -84,3 +84,4 @@ O comportamento de idempotência é auditado por 3 baterias de testes:
    Dispara 10 requisições simultâneas com a mesma chave: comprova que exatamente 1 adquire o lock e 9 recebem `409 Conflict`.
 3. `IntegrationTests/Controllers/ChargesControllerIntegrationTests.cs`:
    Testa a chamada HTTP real validando a presença do cabeçalho `Idempotent-Replay: true` e a rejeição `422` em divergências.
+

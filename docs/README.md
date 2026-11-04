@@ -40,3 +40,4 @@ Este repositório foi construído para servir como demonstração prática e ver
 | **Pilha de Observabilidade** | OpenTelemetry, Prometheus, Jaeger e Grafana |
 | **Bateria de Testes** | 84 testes automatizados cobrindo Domínio, Casos de Uso, Concorrência e Integração E2E |
 | **Cobertura de Código** | **82.99%** consolidada via Coverlet |
+
