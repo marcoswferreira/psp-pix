@@ -9,6 +9,7 @@ O **Mini-PSP Pix Simulado** implementa um **Ledger Contábil de Dupla Entrada (*
 ## ⚖️ Princípio das Partidas Dobradas (Double-Entry)
 
 Cada movimentação financeira é representada por uma `LedgerTransaction` contendo no mínimo dois lançamentos (`LedgerEntry`):
+
 * Pelo menos um **Débito** (`EntryType.Debit`).
 * Pelo menos um **Crédito** (`EntryType.Credit`).
 * **Invariante Matemática Imutável**:
@@ -30,6 +31,7 @@ public void AssertBalanceInvariant()
 ```
 
 ### Contas do Sistema
+
 1. **Conta Transitória de Liquidação Bacen (`PixSettlementTransit`)**:
    Representa a contraparte centralizada da câmara de liquidação instantânea (SPI). É uma conta de espelho (*clearing account*) que absorve o contra-lançamento de entradas e saídas.
 2. **Conta do Comerciante (`Merchant`)**:
@@ -40,16 +42,19 @@ public void AssertBalanceInvariant()
 ## ⚔️ A Condição de Corrida: Gasto Duplo (*Check-Then-Act*)
 
 Considere o cenário clássico de um serviço financeiro ingênuo (`NaiveAccountService`):
+
 1. **Check**: Lê o saldo atual do comerciante (`saldo = 100.00`).
 2. **Janela de I/O / Latência de Rede**: Pequeno delay entre a validação de regras e a escrita no banco (25ms).
 3. **Act**: Atualiza o saldo (`saldo = saldo - 100.00`).
 
 Quando duas requisições paralelas chegam quase simultaneamente:
+
 * A **Requisição 1** lê o saldo de R$ 100,00 e aprova a operação.
 * A **Requisição 2** lê o mesmo saldo de R$ 100,00 **antes** da Requisição 1 terminar a escrita e também aprova.
 * **Resultado Catastrófico**: O lojista saca **R$ 200,00** de uma conta que possuía apenas **R$ 100,00**!
 
-### Demonstração Verificável no Teste:
+### Demonstração Verificável no Teste
+
 ```csharp
 [Fact]
 public async Task WithoutConcurrencyControl_TwoParallelRequests_ShouldBothSpendSameBalance_CausingDoubleSpending()
@@ -89,14 +94,17 @@ public void Debit(decimal amount, bool? allowOverdraft = null)
 ```
 
 No mapeamento EF Core (`EntityMappings.cs`):
+
 ```csharp
 builder.Property(a => a.Version)
     .IsRowVersion()
     .IsConcurrencyToken();
 ```
 
-### Como Funciona:
+### Como Funciona
+
 Ao executar o `SaveChangesAsync()`, o EF Core emite um comando condicional no banco de dados:
+
 ```sql
 UPDATE "LedgerAccounts"
 SET "Balance" = @newBalance, "Version" = @newVersion
@@ -104,13 +112,16 @@ WHERE "Id" = @id AND "Version" = @originalVersion;
 ```
 
 Se outra requisição já tiver incrementado a versão no milissegundo anterior:
+
 1. Nenhuma linha é afetada (`Rows Affected = 0`).
 2. O EF Core detecta a quebra e lança uma `DbUpdateConcurrencyException`.
 3. O repositório intercepta e lança uma `ConcurrencyException`.
 4. O middleware global retorna `409 Conflict` ou `422 Unprocessable Entity` com `ProblemDetails`.
 
-### Prova no Teste com 10 Requisições Paralelas:
+### Prova no Teste com 10 Requisições Paralelas
+
 No teste `WithOptimisticConcurrencyControl_ParallelDebits_ShouldPreventDoubleSpending`:
+
 * Saldo inicial: R$ 100,00.
 * **10 requisições simultâneas** tentam debitar R$ 100,00 através de `RecordDoubleEntryTransferAsync`.
 * **Resultado Comprovado**:
@@ -118,4 +129,3 @@ No teste `WithOptimisticConcurrencyControl_ParallelDebits_ShouldPreventDoubleSpe
   * **As outras 9 requisições** são rejeitadas por conflito de versão (`ConcurrencyException`) ou saldo insuficiente.
   * O saldo final da conta do comerciante termina rigorosamente em **R$ 0,00** (nunca negativo).
   * O balanço do Ledger encerra com $\sum \text{Débitos} = 100.00$ e $\sum \text{Créditos} = 100.00$.
-

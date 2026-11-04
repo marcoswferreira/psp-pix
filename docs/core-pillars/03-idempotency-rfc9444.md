@@ -54,6 +54,7 @@ Dois JSONs com os mesmos dados, porém com ordens de propriedades ou espaços di
 ```
 
 A classe `IdempotencyHasher`:
+
 1. Faz o parse recursivo da árvore JSON (`JsonNode`).
 2. Ordena alfabeticamente todas as chaves de objetos (`JsonObject`).
 3. Serializa o JSON canônico sem indentação.
@@ -78,10 +79,10 @@ Assim, `Payload A` e `Payload B` produzem rigorosamente o mesmo hash SHA-256, ga
 ## 🧪 Cobertura por Testes Automatizados
 
 O comportamento de idempotência é auditado por 3 baterias de testes:
+
 1. `Application.UnitTests/Services/HmacAndIdempotencyTests.cs`:
    Valida que objetos com chaves invertidas geram hashes idênticos e objetos alterados geram hashes diferentes.
 2. `IntegrationTests/Concurrency/RaceConditionAndConcurrencyTests.cs`:
    Dispara 10 requisições simultâneas com a mesma chave: comprova que exatamente 1 adquire o lock e 9 recebem `409 Conflict`.
 3. `IntegrationTests/Controllers/ChargesControllerIntegrationTests.cs`:
    Testa a chamada HTTP real validando a presença do cabeçalho `Idempotent-Replay: true` e a rejeição `422` em divergências.
-

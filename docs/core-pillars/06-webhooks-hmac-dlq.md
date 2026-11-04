@@ -10,14 +10,16 @@ Cada comerciante possui uma chave secreta (`SecretKey`) gerada no cadastro do we
 
 $$\text{Header: } \texttt{X-Signature: t=\{timestamp\},v1=\{hmac\_sha256\}}$$
 
-### Como a Assinatura é Gerada (`HmacSignerService`):
+### Como a Assinatura é Gerada (`HmacSignerService`)
+
 1. **Timestamp**: Obtém o Unix Timestamp em segundos (`DateTimeOffset.UtcNow.ToUnixTimeSeconds()`).
 2. **Payload Assinado**: Concatena o carimbo de tempo com o corpo JSON:
    $$\text{Mensagem} = \texttt{"\{timestamp\}.\{payloadJson\}"}$$
 3. **Cálculo HMAC**: Executa `HMACSHA256` utilizando a chave secreta do lojista:
    $$\text{v1} = \text{Convert.ToHexString}(\text{HMACSHA256}(\text{Key}, \text{Mensagem})).\text{ToLowerInvariant}()$$
 
-### Como o Comerciante Valida a Notificação:
+### Como o Comerciante Valida a Notificação
+
 1. Extrai `t` e `v1` do cabeçalho `X-Signature`.
 2. **Prevenção contra Ataques de Replay**:
    * Compara `t` com a hora atual do servidor receptor.
@@ -25,8 +27,8 @@ $$\text{Header: } \texttt{X-Signature: t=\{timestamp\},v1=\{hmac\_sha256\}}$$
 3. **Validação de Integridade e Autenticidade**:
    * Recalcula o HMAC do corpo recebido com sua `SecretKey`.
    * Se o hash calculado for estritamente igual ao `v1`, o lojista tem a garantia matemática de que:
-     - A notificação foi gerada autenticamente pelo Mini-PSP (somente o PSP e o lojista possuem a chave).
-     - Nenhum caractere do JSON foi violado por interceptadores intermediários (*Man-in-the-Middle*).
+     * A notificação foi gerada autenticamente pelo Mini-PSP (somente o PSP e o lojista possuem a chave).
+     * Nenhum caractere do JSON foi violado por interceptadores intermediários (*Man-in-the-Middle*).
 
 ---
 
@@ -51,7 +53,8 @@ stateDiagram-v2
     DeadLettered --> [*]
 ```
 
-### Fórmula de Atraso Exponencial:
+### Fórmula de Atraso Exponencial
+
 A cada falha registrada por `delivery.RecordFailure(...)`, o próximo horário de reenvio é programado:
 $$\text{Delay em Segundos} = 2^{(\text{Tentativa} - 1)} \times 2$$
 
@@ -66,7 +69,7 @@ $$\text{Delay em Segundos} = 2^{(\text{Tentativa} - 1)} \times 2$$
 ## 💀 Dead Letter Queue (DLQ)
 
 Quando a entrega atinge o status `DeadLettered`:
+
 * O `NextRetryAtUtc` é anulado para cessar o envio contra o servidor indisponível.
 * A mensagem permanece persistida para auditoria técnica na tabela `WebhookDeliveries` e pode ser encaminhada para a fila RabbitMQ `pix.webhook.dlq`.
 * Permite que operadores de suporte investiguem o incidente e realizem o reprocessamento manual assim que o parceiro restabelecer a infraestrutura.
-

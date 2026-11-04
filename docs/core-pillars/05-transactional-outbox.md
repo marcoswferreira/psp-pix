@@ -15,6 +15,7 @@ await _rabbitMq.PublishAsync(event); // 2. Publica no RabbitMQ
 ```
 
 Duas falhas graves podem acontecer:
+
 1. **Falha após o Banco**: Se o processo cair, perder a rede com o RabbitMQ ou sofrer timeout após a linha 1, o pagamento foi gravado, mas **nenhum evento é emitido** para o sistema parceiro ou webhooks (Perda de Mensagem).
 2. **Falha invertida**: Se publicarmos antes do commit e o banco rejeitar por violação de constraint ou deadlock, o evento foi emitido, mas o pagamento **não existe no banco** (Mensagem Fantasma).
 
@@ -73,6 +74,7 @@ public class OutboxMessage : BaseEntity, IAggregateRoot
 ## ⚙️ Funcionamento do `OutboxPublisherWorker`
 
 O serviço de segundo plano (`BackgroundService`):
+
 1. Cria um escopo de injeção de dependências (`_serviceProvider.CreateScope()`).
 2. Consulta o repositório por lotes não processados: `GetUnprocessedBatchAsync(20)`.
 3. Para cada mensagem:
@@ -92,4 +94,3 @@ O serviço de segundo plano (`BackgroundService`):
   * `pix.payment.received`: Disparado na confirmação e liquidação inbound do pagamento.
   * `pix.payout.completed`: Disparado na liquidação com sucesso de uma ordem de saque/saída.
 * **Garantia de Entrega**: *At-Least-Once Delivery* (Pelo menos uma vez). Os consumidores externos devem ser idempotentes para processar eventuais reentregas.
-

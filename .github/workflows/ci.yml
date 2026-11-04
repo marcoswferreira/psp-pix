@@ -91,3 +91,4 @@ jobs:
       - name: Build Docker Image
         run: |
           docker build -t minipsp-api:test -f Dockerfile .
+
