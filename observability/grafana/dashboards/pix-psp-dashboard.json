@@ -1,0 +1,64 @@
+{
+  "annotations": { "list": [] },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": null,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "title": "Cobranças Pix Criadas (Total)",
+      "type": "stat",
+      "gridPos": { "h": 6, "w": 6, "x": 0, "y": 0 },
+      "targets": [{ "expr": "sum(pix_charges_created_total) or vector(0)", "legendFormat": "Cobranças" }]
+    },
+    {
+      "title": "Pagamentos Recebidos (Total)",
+      "type": "stat",
+      "gridPos": { "h": 6, "w": 6, "x": 6, "y": 0 },
+      "targets": [{ "expr": "sum(pix_payments_received_total) or vector(0)", "legendFormat": "Liquidados" }]
+    },
+    {
+      "title": "Payouts Processados (Total)",
+      "type": "stat",
+      "gridPos": { "h": 6, "w": 6, "x": 12, "y": 0 },
+      "targets": [{ "expr": "sum(pix_payouts_processed_total) or vector(0)", "legendFormat": "Saques" }]
+    },
+    {
+      "title": "Idempotency Cache Replays (Total)",
+      "type": "stat",
+      "gridPos": { "h": 6, "w": 6, "x": 18, "y": 0 },
+      "targets": [{ "expr": "sum(pix_idempotency_hits_total) or vector(0)", "legendFormat": "Replays Idempotentes" }]
+    },
+    {
+      "title": "Taxa de Requisições por Segundo (Throughput RPS)",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 6 },
+      "targets": [
+        { "expr": "sum(rate(http_server_request_duration_seconds_count[1m]))", "legendFormat": "RPS Total" },
+        { "expr": "sum(rate(pix_charges_created_total[1m]))", "legendFormat": "Pix Cob /s" },
+        { "expr": "sum(rate(pix_payments_received_total[1m]))", "legendFormat": "Pix Inbound /s" }
+      ]
+    },
+    {
+      "title": "Latência HTTP (p50, p90, p95, p99)",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 6 },
+      "targets": [
+        { "expr": "histogram_quantile(0.50, sum(rate(http_server_request_duration_seconds_bucket[1m])) by (le))", "legendFormat": "p50" },
+        { "expr": "histogram_quantile(0.95, sum(rate(http_server_request_duration_seconds_bucket[1m])) by (le))", "legendFormat": "p95" },
+        { "expr": "histogram_quantile(0.99, sum(rate(http_server_request_duration_seconds_bucket[1m])) by (le))", "legendFormat": "p99" }
+      ]
+    }
+  ],
+  "refresh": "5s",
+  "schemaVersion": 38,
+  "style": "dark",
+  "tags": ["pix", "psp", "fintech"],
+  "time": { "from": "now-15m", "to": "now" },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "Mini-PSP Pix Dashboard",
+  "version": 1
+}
