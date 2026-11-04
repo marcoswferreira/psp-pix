@@ -93,7 +93,7 @@ public void Debit(decimal amount, bool? allowOverdraft = null)
 }
 ```
 
-No mapeamento EF Core (`EntityMappings.cs`):
+No mapeamento EF Core (`LedgerAccountMapping.cs`):
 
 ```csharp
 builder.Property(a => a.Version)

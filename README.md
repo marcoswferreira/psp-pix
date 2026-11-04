@@ -11,7 +11,8 @@ Projetado para demonstrar domínio prático de:
 - **Transactional Outbox Pattern** com publicação resiliente no RabbitMQ.
 - **Webhooks Assinados com HMAC-SHA256**, backoff exponencial e Dead Letter Queue (DLQ).
 - **Observabilidade Completa** (OpenTelemetry, Prometheus, Grafana, Jaeger) e **Teste de Carga com k6**.
-- **Cobertura de Testes Superior a 80%** (82.99% medido via Coverlet com 84 testes passando).
+- **Padrão Estrito Single Type per File**: 100% dos tipos (`class`, `interface`, `record`, `enum`) desacoplados em arquivos exclusivos e isolados.
+- **Cobertura de Testes Superior a 80%** (81.49% medido via Coverlet com 84 testes passando).
 
 ---
 
@@ -86,7 +87,7 @@ dotnet test
 dotnet test --settings coverlet.runsettings --collect:"XPlat Code Coverage"
 ```
 
-> **Resultado**: **82.99%** de cobertura consolidada (**100% na API**, **100% na Aplicação**, **96.3% na Infraestrutura**, **71.2% no Domínio**).
+> **Resultado**: **81.49%** de cobertura consolidada (**100% na API**, **100% na Aplicação**, **96.3% na Infraestrutura**, **71.2% no Domínio**).
 
 ### 3. Subir o Ecossistema Completo com Docker Compose
 

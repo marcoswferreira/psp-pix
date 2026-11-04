@@ -38,6 +38,7 @@ Este repositório foi construído para servir como demonstração prática e ver
 | **Banco de Dados** | PostgreSQL 16 (produção/container) & Entity Framework Core In-Memory (testes isolados) |
 | **Mensageria & Filas** | RabbitMQ 3.13 (AMQP 0-9-1) |
 | **Pilha de Observabilidade** | OpenTelemetry, Prometheus, Jaeger e Grafana |
+| **Padrão de Código** | 100% aderente a **Single Type per File** (um tipo por arquivo físico) |
 | **Bateria de Testes** | 84 testes automatizados cobrindo Domínio, Casos de Uso, Concorrência e Integração E2E |
-| **Cobertura de Código** | **82.99%** consolidada via Coverlet |
+| **Cobertura de Código** | **81.49%** consolidada via Coverlet ($\ge 80\%$ assegurado) |
 

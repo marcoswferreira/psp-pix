@@ -90,6 +90,17 @@ Ponto de entrada HTTP do sistema.
 
 ---
 
+## 📄 Princípio de Single Type per File (Um Tipo por Arquivo)
+
+Toda a base de código do projeto obedece rigorosamente ao padrão **Single Type per File**:
+* Cada arquivo `.cs` contém **exclusivamente um único tipo top-level** (seja `class`, `interface`, `record`, `struct` ou `enum`).
+* O nome do arquivo físico é **idêntico** ao identificador do tipo declarado (ex: `PixCharge.cs` declara apenas `class PixCharge`, `ChargeStatus.cs` declara apenas `enum ChargeStatus`, `IChargeRepository.cs` declara apenas `interface IChargeRepository`).
+* DTOs de casos de uso (Inputs e Outputs) são segregados em arquivos individuais dentro de pastas `Dto/` dedicadas (ex: `CreatePixChargeInput.cs` e `PixChargeOutput.cs`).
+* Mapeamentos do EF Core, repositórios, serviços de domínio e trabalhadores em background (`BackgroundService`) são todos desacoplados em arquivos autônomos.
+* Essa disciplina elimina arquivos "balde" (como `Entities.cs`, `Enums.cs` ou `Services.cs`), facilita o rastreamento em Pull Requests, melhora a navegação em IDEs e potencializa a compilação paralela do Roslyn.
+
+---
+
 ## 🧪 Estratégia de Testes
 
 A organização de testes espelha rigorosamente as camadas da arquitetura:

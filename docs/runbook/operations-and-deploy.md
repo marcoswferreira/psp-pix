@@ -64,7 +64,7 @@ print(f'COBERTURA CONSOLIDADA: {covered}/{total} ({covered/total*100:.2f}%)')
 "
 ```
 
-> **Métrica Atual**: **82.99%** de cobertura global.
+> **Métrica Atual**: **81.49%** de cobertura global.
 
 ---
 
