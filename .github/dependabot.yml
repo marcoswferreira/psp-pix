@@ -1,15 +1,27 @@
 version: 2
 updates:
-  # Maintain dependencies for GitHub Actions
+  # Monitoramento de dependências das GitHub Actions
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "weekly"
+    groups:
+      actions-dependencies:
+        patterns:
+          - "*"
 
-  # Maintain NuGet dependencies for .NET solution
+  # Monitoramento de dependências NuGet da solução .NET 10
   - package-ecosystem: "nuget"
     directory: "/"
     schedule:
       interval: "weekly"
-    open-pull-requests-limit: 10
-
+    open-pull-requests-limit: 3
+    groups:
+      # Agrupa todas as atualizações de pacotes em um único PR consolidado
+      nuget-dependencies:
+        patterns:
+          - "*"
+    ignore:
+      # Evita breaking changes do RabbitMQ.Client v7 (API assíncrona reescrita em relação à v6)
+      - dependency-name: "RabbitMQ.Client"
+        update-types: ["version-update:semver-major"]
