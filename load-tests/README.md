@@ -50,3 +50,4 @@ k6 run -e API_URL=http://localhost:5000 load-tests/k6-charges-load.js
 | **Latência p95** | `< 150 ms` | 95% das emissões e liquidações abaixo de 150ms |
 | **Latência p99** | `< 300 ms` | 99% das requisições em menos de 300ms |
 | **Throughput Sustentado** | `> 300 req/s` | Capacidade medida em hardware padrão |
+

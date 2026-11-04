@@ -193,3 +193,4 @@ curl http://localhost:5000/v1/ledger/accounts/22222222-2222-2222-2222-2222222222
 
 ## 👨‍💻 Autor
 Desenvolvido por **Marcos W. Ferreira** como projeto de referência arquitetural para sistemas de pagamentos de missão crítica.
+

@@ -19,3 +19,4 @@ EXPOSE 5000
 ENV ASPNETCORE_URLS=http://+:5000
 COPY --from=build /app/publish .
 ENTRYPOINT ["dotnet", "MiniPspPix.Api.dll"]
+
