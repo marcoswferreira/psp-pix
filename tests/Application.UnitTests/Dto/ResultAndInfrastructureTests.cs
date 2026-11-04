@@ -71,3 +71,4 @@ public class ResultAndInfrastructureTests
         hashArray.Should().Be(hashArrayReordered);
     }
 }
+

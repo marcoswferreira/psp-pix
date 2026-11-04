@@ -73,3 +73,4 @@ public class BrCodeServiceTests
         svg.Should().Contain("#32BCAD");
     }
 }
+

@@ -58,3 +58,4 @@ public interface IIdempotencyStore
     Task<bool> TryAcquireLockAsync(string key, string requestHash, string route, TimeSpan lockDuration, CancellationToken ct = default);
     Task SaveResultAsync(string key, int statusCode, string responseBody, CancellationToken ct = default);
 }
+

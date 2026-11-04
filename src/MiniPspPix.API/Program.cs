@@ -50,3 +50,4 @@ app.Run();
 
 // Required for WebApplicationFactory in IntegrationTests
 public partial class Program { }
+

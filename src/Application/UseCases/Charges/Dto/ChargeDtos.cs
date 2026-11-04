@@ -31,3 +31,4 @@ public record PixChargeOutput(
     DateTime? PaidAtUtc,
     string? EndToEndId
 );
+

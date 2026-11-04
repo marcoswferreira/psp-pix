@@ -142,3 +142,4 @@ public class ChargesControllerIntegrationTests : IClassFixture<CustomWebApplicat
         response.StatusCode.Should().Be(HttpStatusCode.NotFound);
     }
 }
+

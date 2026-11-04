@@ -66,3 +66,4 @@ public class ExceptionHandler(ILogger<ExceptionHandler> logger) : IExceptionHand
         return true;
     }
 }
+

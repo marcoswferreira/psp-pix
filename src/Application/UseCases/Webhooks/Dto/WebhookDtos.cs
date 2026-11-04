@@ -18,3 +18,4 @@ public record WebhookSubscriptionOutput(
     bool IsActive,
     DateTime CreatedAtUtc
 );
+

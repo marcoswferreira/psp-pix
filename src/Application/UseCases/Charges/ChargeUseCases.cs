@@ -95,3 +95,4 @@ public class GetPixChargeByTxIdUseCase(IChargeRepository chargeRepository)
         return charge != null ? CreatePixChargeUseCase.ToOutput(charge) : null;
     }
 }
+

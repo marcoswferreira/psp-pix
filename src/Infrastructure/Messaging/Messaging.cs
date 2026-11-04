@@ -117,3 +117,4 @@ public class RabbitMqEventPublisher : IEventPublisher, IDisposable
         try { _connection?.Close(); _connection?.Dispose(); } catch { }
     }
 }
+

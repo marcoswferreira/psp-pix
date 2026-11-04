@@ -23,3 +23,4 @@ public record InboundPaymentOutput(
     DateTime PaidAtUtc,
     string Message
 );
+

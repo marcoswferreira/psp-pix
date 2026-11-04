@@ -127,3 +127,4 @@ public class PaymentsAndPayoutIntegrationTests : IClassFixture<CustomWebApplicat
         response.StatusCode.Should().Be(HttpStatusCode.UnprocessableEntity);
     }
 }
+

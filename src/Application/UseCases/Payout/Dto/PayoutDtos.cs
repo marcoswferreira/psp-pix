@@ -22,3 +22,4 @@ public record PayoutOutput(
     decimal RemainingBalance,
     string Message
 );
+

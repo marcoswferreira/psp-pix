@@ -35,3 +35,4 @@ public static class PixMetrics
         "pix_webhooks_dispatched_total",
         description: "Total de webhooks despachados");
 }
+

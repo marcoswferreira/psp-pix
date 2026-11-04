@@ -49,3 +49,4 @@ public class WebhooksIntegrationTests : IClassFixture<CustomWebApplicationFactor
         response.StatusCode.Should().Be(HttpStatusCode.OK);
     }
 }
+

@@ -20,3 +20,4 @@ public class ResultGeneric<T>(T value, bool isSuccess, List<string> errors)
     public static ResultGeneric<T> Failure(List<string> errors) => new(default!, false, errors ?? []);
     public static ResultGeneric<T> Failure(string error) => new(default!, false, [error]);
 }
+

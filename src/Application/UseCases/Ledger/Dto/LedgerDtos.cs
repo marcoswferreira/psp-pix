@@ -21,3 +21,4 @@ public record LedgerStatementItemOutput(
     string Description,
     DateTime CreatedAtUtc
 );
+

@@ -163,3 +163,4 @@ public class ConcurrencyProtectionTests
         acquiredResults.Count(a => !a).Should().Be(9);
     }
 }
+

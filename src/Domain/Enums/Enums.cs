@@ -54,3 +54,4 @@ public enum ChaosAction
     Fail = 3,
     Duplicate = 4
 }
+
