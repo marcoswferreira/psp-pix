@@ -20,6 +20,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\MiniPspPix.Api\MiniPspPix.Api.csproj" />
+    <ProjectReference Include="..\..\src\MiniPspPix.Infrastructure\MiniPspPix.Infrastructure.csproj" />
     <ProjectReference Include="..\..\src\MiniPspPix.Application\MiniPspPix.Application.csproj" />
     <ProjectReference Include="..\..\src\MiniPspPix.Domain\MiniPspPix.Domain.csproj" />
   </ItemGroup>

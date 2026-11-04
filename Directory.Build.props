@@ -1,0 +1,7 @@
+<Project>
+  <PropertyGroup>
+    <!-- Exclui código gerado por compiladores e geradores OpenAPI da cobertura -->
+    <ExcludeByFile>**/Generated/**/*;**/*.g.cs;**/OpenApiXmlCommentSupport_generated*</ExcludeByFile>
+  </PropertyGroup>
+</Project>
+
