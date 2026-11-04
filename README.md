@@ -14,6 +14,25 @@ Projetado para demonstrar domínio prático de:
 
 ---
 
+## 📖 Documentação Técnica Completa
+
+Para aprofundar em cada detalhe de engenharia, arquitetura e decisões de projeto, consulte nossa pasta de documentação detalhada:
+
+* 📚 [**Índice Geral de Documentação**](docs/README.md)
+* 🏛️ [**Clean Architecture & DDD**](docs/architecture/clean-architecture.md)
+* 🗺️ [**Diagramas C4 Model (Contexto, Contêiner, Componente e Implantação)**](docs/architecture/c4-model.md)
+* 🏷️ [**Pilar 1: Cobrança Imediata & BR Code EMVCo / CRC16**](docs/core-pillars/01-brcode-emv.md)
+* ⚡ [**Pilar 2: Provedor Bancário Simulado & Engenharia de Caos**](docs/core-pillars/02-banking-provider-chaos.md)
+* 🔄 [**Pilar 3: Idempotência Rigorosa (RFC 9444 / IETF)**](docs/core-pillars/03-idempotency-rfc9444.md)
+* ⚖️ [**Pilar 4: Ledger de Dupla Entrada & Concorrência (Double-Spending)**](docs/core-pillars/04-double-entry-ledger.md)
+* 📦 [**Pilar 5: Transactional Outbox Pattern & RabbitMQ**](docs/core-pillars/05-transactional-outbox.md)
+* 🔐 [**Pilar 6: Webhooks com Assinatura HMAC-SHA256 & DLQ**](docs/core-pillars/06-webhooks-hmac-dlq.md)
+* 📊 [**Pilar 7: Observabilidade (OTel/Prometheus/Grafana) & k6**](docs/core-pillars/07-observability-load-testing.md)
+* 📋 [**Referência de Contratos da API REST (v1.0)**](docs/api/api-contracts.md)
+* 🛠️ [**Runbook Operacional & Guia de Implantação**](docs/runbook/operations-and-deploy.md)
+
+---
+
 ## 🏛️ Arquitetura da Solução
 
 O projeto segue estritamente o padrão Clean Architecture / DDD estabelecido no projeto [18SOAT_TechChallenge](https://github.com/marcoswferreira/18SOAT_TechChallenge):
@@ -24,6 +43,8 @@ mini-psp-pix-simulado/
 ├── Dockerfile
 ├── docker-compose.yml
 ├── coverlet.runsettings
+│
+├── docs/                           # Documentação técnica completa (C4, Pilares, API, Runbook)
 │
 ├── src/
 │   ├── Domain/                     # Entidades puras, Value Objects, Enums e Interfaces
